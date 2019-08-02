@@ -1,0 +1,40 @@
+node{
+    def groupName = ''
+	def appName = ''
+	def appVersion = ''
+	def jarFile = ''
+	
+    stage('checkout'){
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'root2', url: 'http://101.101.165.137:10080/root/root.git']]])
+    }
+	stage('Initialize') {
+		sh "chmod +x ./gradlew"
+		appName = sh(script: "./gradlew properties -q | grep \"name\" | awk '{print \$2}'", returnStdout: true).trim()
+		groupName = sh(script: "./gradlew properties -q | grep  \"group\" | awk '{print \$2}'", returnStdout: true).trim()
+		appVersion = sh(script: "./gradlew properties -q | grep \"version:\" | awk '{print \$2}'", returnStdout: true).trim()
+		jarFile = appName + '-' + appVersion +'.jar'
+		echo jarFile
+	}
+	stage('Build') {
+		sh "./gradlew build"
+	}
+	stage('Archive') {
+		parallel (
+			"Archive Artifacts" : {
+				archiveArtifacts artifacts: '**/build/libs/'+ appName + '-' + appVersion +'.jar', fingerprint: true
+			},
+			"Docker ImagePush" : {
+				sh 'mv build/libs/' + jarFile + ' ./app.jar'
+				sh 'docker rmi -f app'
+				sh 'docker container ls -a -f name=app -q | xargs -r docker container stop'
+				sh 'docker container ls -a -f name=app -q | xargs -r docker container rm'
+				sh 'docker image build --build-arg=${ParamEnv} --rm=true -t app .'
+				sh 'docker image tag app localhost:5000/app'
+				sh 'docker image push localhost:5000/app'
+				//sh 'docker ps -f name=app -q | xargs --no-run-if-empty docker container stop'
+                
+				sh 'docker run --restart=always --name=app -d -p 9091:9091 app .'
+			}
+		)
+	}
+}
