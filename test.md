@@ -10,4 +10,5 @@
   <li>두번째-2</li>
 </ul>
 
-<a href="https://google.com"><h3>[GOOGLE](https://google.com)</h3></a>
+구글 홈페이지: https://google.com <br>
+네이버 홈페이지: <https://naver.com>
