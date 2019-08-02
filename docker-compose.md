@@ -1,0 +1,48 @@
+
+Docker-compose >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+version: '2'
+
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: 'gitlab'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://101.101.165.137':ㅂ!
+		
+    ports:
+      - '10080:80'
+      - '10022:22'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+
+
+  jenkins:
+    privileged: true
+    restart: always
+    image: 'jenkins-docker'
+    container_name: jenkins
+    user: root
+    environment:
+      JENKINS_HOST_HOME: "/data/jenkins"
+    ports:
+      - "8090:8080"
+    volumes:
+      - /data/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+
+
+  tomcat:
+    image: tomcat:latest
+    container_name: tomcat
+    ports:
+      - "80:8080"
+    volumes:
+      - /svr/docker/tomcat/webapps:/user/local/tomcat/webapps
+    restart: always
