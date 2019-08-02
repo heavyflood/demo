@@ -1,0 +1,23 @@
+node{
+    def mvnHome
+    def artifactId
+    def version
+    def war
+	
+    stage('checkout'){
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '777302b2-d5bb-40ef-ab85-7212dfef6d36', url: 'http://106.10.40.59:10080/jiwan/test.git']]])
+    }
+    stage('Initialize') {
+        mvnHome = tool 'M3'
+        //artifactId = sh(script:'mvn help:evaluate -Dexpression=project.artifactId -q', returnStdout: true).trim()
+        //version = sh(script:'mvn help:evaluate -Dexpression=project.version -q', returnStdout: true).trim()
+        //war = artifactId + '-' + version + '.war'
+        //echo war
+    }
+    stage('build'){
+        sh "'${mvnHome}/bin/mvn' -DskipTests clean package -DfinalName=app"
+    }
+    stage('deploy'){
+        sh "docker cp 'target/app.war' tomcat:usr/local/tomcat/webapps/"
+    }
+}
