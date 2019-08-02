@@ -11,7 +11,7 @@ services:
     hostname: 'gitlab.example.com'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://101.101.165.137':ㅂ!
+        external_url 'http://101.101.165.137':10080
 		
     ports:
       - '10080:80'
