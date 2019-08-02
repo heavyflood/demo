@@ -12,3 +12,5 @@
 
 구글 홈페이지: https://google.com <br>
 네이버 홈페이지: <https://naver.com>
+
+`background`혹은 `background-image` 속성으로 요소에 배경 이미지를 삽입할 수 있습니다.
