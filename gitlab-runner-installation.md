@@ -15,7 +15,7 @@ This is mainly divided into three parts
     -v /srv/gitlab-runner/config:/etc/gitlab-runner:Z \   
     gitlab/gitlab-runner:latest
 
-**
+
 
 ## Find Registration Code
 you could go to GitLab website to find Runner Registration Token which locate at **Admin Area** > **Overview** > **Runners**
