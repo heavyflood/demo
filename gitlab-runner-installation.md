@@ -19,6 +19,8 @@ This is mainly divided into three parts
 
 ## Find Registration Code
 you could go to GitLab website to find Runner Registration Token which locate at **Admin Area** > **Overview** > **Runners**
+
+
 ![enter image description here](https://github.com/heavyflood/demo/blob/master/1_uYRzvDZbcwInDqZ3lGeKsw.png?raw=true)
 
 
