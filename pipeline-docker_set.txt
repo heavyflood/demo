@@ -5,7 +5,7 @@ node{
 	def jarFile = ''
 	
     stage('checkout'){
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'root2', url: 'http://101.101.165.137:10080/root/root.git']]])
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'root', url: 'http://101.101.165.137:10080/root/root.git']]])
     }
 	stage('Initialize') {
 		sh "chmod +x ./gradlew"
@@ -21,20 +21,23 @@ node{
 	stage('Archive') {
 		parallel (
 			"Archive Artifacts" : {
-				archiveArtifacts artifacts: '**/build/libs/'+ appName + '-' + appVersion +'.jar', fingerprint: true
+				archiveArtifacts artifacts: 'build/libs/'+ appName + '-' + appVersion +'.jar', fingerprint: true
 			},
 			"Docker ImagePush" : {
 				sh 'mv build/libs/' + jarFile + ' ./app.jar'
-				sh 'docker rmi -f app'
+				//sh 'docker rmi -f localhost:5000/app'
+				//delete <none> tagged images
+				//sh 'docker rmi $(docker images -f dangling=true -q)'
 				sh 'docker container ls -a -f name=app -q | xargs -r docker container stop'
 				sh 'docker container ls -a -f name=app -q | xargs -r docker container rm'
-				sh 'docker image build --build-arg=${ParamEnv} --rm=true -t app .'
-				sh 'docker image tag app localhost:5000/app'
+				sh 'docker rmi -f app'
+				sh 'docker image build --build-arg SERVER_ENV=${parEnv} --rm=true -t app .'
 				sh 'docker image push localhost:5000/app'
-				//sh 'docker ps -f name=app -q | xargs --no-run-if-empty docker container stop'
-                
-				sh 'docker run --restart=always --name=app -d -p 9091:9091 app .'
+
 			}
 		)
+	}
+	stage('Run') {
+	    sh 'docker run --name=app -d -p 9091:9091 app .'
 	}
 }
