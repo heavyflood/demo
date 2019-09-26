@@ -28,21 +28,9 @@
 
 <h2>Step 2 — Install Docker Compose</h2>
 
-**Install Extra Packages for Enterprise Linux**
+    $ curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-    $ sudo yum install epel-release
-
-**Install python-pip**
-
-    $ sudo yum install -y python-pip
-
-**Then install Docker Compose:**
-
-    $ sudo pip install docker-compose
-
-**You will also need to upgrade your Python packages on CentOS 7 to get docker-compose to run successfully:**
-
-    $ sudo yum upgrade python*
+    $ chmod +x /usr/local/bin/docker-compose
 
 **To verify a successful Docker Compose installation, run:**
 
