@@ -3,8 +3,7 @@
 # Kubernetesfile - NCP
 
 
-## SERVICE
-
+    # SERVICE
     apiVersion: v1
     kind: Service
     metadata:
@@ -20,12 +19,9 @@
     #   nodePort: 30130                 # 클러스터 Node와의 통신 포트 -> 미지정시 가용한 포트에 랜덤하게 할당됨                                       
         targetPort: 9082                # Service object로 들어온 요청을 전달할 target이되는 Pod이 노출하고 있는 포트.(pod 내의 container 연결포트)                                       
                                         # ==============> targetPort는 수동설정  <==========================================
-
-
----
-
-## DEPOLOYMENT
-
+    ---
+    
+    # DEPOLOYMENT
     apiVersion: apps/v1
     kind: Deployment
     metadata:                           # Deployment object 자신의 고유 정보
@@ -90,17 +86,10 @@
                 exec:
                   command: ["sh", "-c", "sleep 20"]             
           imagePullSecrets:
-          - name: regcred 
-
-
-
-
-
-   ---
-
-## HPA(Horizonal Pod AutoScaler) # Horizonal Pod AutoScaler 적용
-
-      
+          - name: regcred    
+    ---
+    
+    # HPA(Horizonal Pod AutoScaler)     # Horizonal Pod AutoScaler 적용      
     apiVersion: autoscaling/v2beta1
     kind: HorizontalPodAutoscaler
     metadata:
@@ -117,13 +106,10 @@
         resource:
           name: cpu
           targetAverageUtilization: 80
-    #      targetAverageValue: 1k
-
-
----
-
-## Ingress          
-
+    #      targetAverageValue: 1k   
+    ---
+    
+    ## Ingress          
     apiVersion: extensions/v1beta1
     kind: Ingress
     metadata:
@@ -140,6 +126,4 @@
               - path: "/"
                 backend:
                   serviceName: ${APP_NAME}-service
-                  servicePort: http 
-
-     
+                  servicePort: http      
