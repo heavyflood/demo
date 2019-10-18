@@ -22,7 +22,9 @@
 
 #  2. Web과 WAS의 분리
 
-## >> apache mod_Proxy 사용
+이미지, js와 같은 정적파일만 처리(port:80)하고 동적파일은 WAS(port:8080)로 보낸다
+
+## 1) apache mod_Proxy 사용
 
     vim /etc/httpd/conf/httpd.conf
     
