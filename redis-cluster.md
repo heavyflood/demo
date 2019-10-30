@@ -132,3 +132,29 @@
        redis-cli add-node --slave --master-id 22f3ad2e09151cb03aabd56e43d7056e2ec38287 192.168.2.128:6380 192.168.2.128:6379
        redis-cli add-node --slave --master-id c30755dfaaa7de3b529a6c160788ca1db8c2f9c5 192.168.2.129:6380 192.168.2.129:6379
        redis-cli add-node --slave --master-id 25083ce77c0eb6012094c2e5183802e62c3d46a2 192.168.2.130:6380 192.168.2.130:6379
+
+
+- Cluster 해제
+
+1. reset
+
+       127.0.0.1:6379> cluster reset
+
+2. Redis master/slave 중지
+
+       [root@localhost src]# mstop
+       [root@localhost src]# sstop
+
+3. config 삭제
+
+       [root@localhost conf]# rm nodes-6379.conf
+       [root@localhost conf]# rm nodes-6380.conf
+
+4. Redis master/slave 시작
+
+       [root@localhost src]# mstart
+       [root@localhost src]# sstart
+
+5. 클러스터링
+
+       [root@localhost src]# redis-cli --cluster create --cluster-replicas 1 192.168.2.128:6379 192.168.2.129:6379 192.168.2.130:6379 192.168.2.128:6380 192.168.2.129:6380 192.168.2.130:6380
