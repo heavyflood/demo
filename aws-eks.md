@@ -58,6 +58,8 @@ Kubernetes 클러스터에 IAM 인증 제공
     --nodes-max 4 /
     --managed
 
+## kube config
+    aws eks --region ap-northeast-2 update-kubeconfig --name phs-cluster
 
 ## deploy
 
