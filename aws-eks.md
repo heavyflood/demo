@@ -6,8 +6,12 @@
 
 ## aws cli 설치
 
-    $ yum install -y python
-    $ pip install awscli --upgrade --user
+    $ curl -O https://bootstrap.pypa.io/get-pip.py
+    $ python get-pip.py --user
+    $ python3 get-pip.py --user
+    $ export PATH=~/.local/bin:$PATH
+    $ source ~/.bash_profile
+    $ pip3 install awscli --upgrade --user
     $ aws configure
     AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
     AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
@@ -34,6 +38,9 @@ Kubernetes 클러스터에 IAM 인증 제공
 
 ## eksctl 설치
 
+    $ vim ~/.bash_profile
+    PATH=$PATH:$HOME/bin:/usr/local/bin
+    $ source ~/.bash_profile
     $ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
     $ sudo mv /tmp/eksctl /usr/local/bin
     $ eksctl version
